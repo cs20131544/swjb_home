@@ -415,22 +415,16 @@
       50%       { transform: translateY(5px); }
     }
 
-    /* ─── HERO TERMINAL ─── */
-    .hero-terminal {
-      position: absolute;
-      right: 5%;
-      top: 50%;
-      transform: translateY(-50%);
-      width: min(400px, 35vw);
-      background: rgba(6, 10, 22, 0.82);
+    /* ─── ABOUT TERMINAL ─── */
+    .about-terminal {
+      width: 100%;
+      background: #0d1117;
       border-radius: 12px;
       border: 1px solid rgba(59,130,246,0.25);
-      box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 40px rgba(27,79,216,0.1);
-      backdrop-filter: blur(18px);
-      z-index: 4;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 32px rgba(27,79,216,0.1);
       overflow: hidden;
       font-family: 'Courier New', 'Consolas', monospace;
-      font-size: 0.76rem;
+      font-size: 0.78rem;
     }
     .terminal-bar {
       background: rgba(255,255,255,0.05);
@@ -472,7 +466,7 @@
       animation: tBlink 1s step-end infinite;
     }
     @keyframes tBlink { 50% { opacity: 0; } }
-    @media (max-width: 960px) { .hero-terminal { display: none; } }
+    @media (max-width: 960px) { .about-terminal { font-size: 0.72rem; } }
 
     /* ─── STATS BAND ─── */
     .stats-band {
@@ -1563,23 +1557,6 @@
       <a href="#about" class="btn-ghost">학과 소개 →</a>
     </div>
   </div>
-  <!-- terminal -->
-  <div class="hero-terminal" aria-hidden="true">
-    <div class="terminal-bar">
-      <span class="t-dot" style="background:#ff5f57"></span>
-      <span class="t-dot" style="background:#febc2e"></span>
-      <span class="t-dot" style="background:#28c840"></span>
-      <span class="t-title">student@swit-software: ~/project</span>
-    </div>
-    <div class="terminal-body">
-      <div id="terminal-lines"></div>
-      <div style="display:flex;align-items:center;gap:4px;">
-        <span class="t-prompt">❯</span>
-        <span id="terminal-typing"></span>
-        <span class="t-cursor"></span>
-      </div>
-    </div>
-  </div>
   <!-- scroll indicator -->
   <div class="hero-scroll-hint">
     <div class="arrow">↓</div>
@@ -1613,15 +1590,19 @@
 <section id="about">
   <div class="container">
     <div class="about-layout">
-      <div class="photo-block reveal">
-        <div class="photo-badge">우수사례 수상</div>
-        <img src="images/2024_p2_img2.jpeg" class="photo-main" style="object-fit:cover;border:none;" alt="IT소프트웨어과 실습 수업" />
-        <div class="photo-sub-row">
-          <div class="photo-sub" style="border:none;background:none;padding:0;">
-            <img src="images/2025_p5_img2.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.1);" alt="코딩 실습" />
-          </div>
-          <div class="photo-sub" style="border:none;background:none;padding:0;">
-            <img src="images/2025_p2_img1.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.1);" alt="미래유망 워크숍" />
+      <div class="about-terminal reveal" aria-hidden="true">
+        <div class="terminal-bar">
+          <span class="t-dot" style="background:#ff5f57"></span>
+          <span class="t-dot" style="background:#febc2e"></span>
+          <span class="t-dot" style="background:#28c840"></span>
+          <span class="t-title">student@swit-software: ~/project</span>
+        </div>
+        <div class="terminal-body">
+          <div id="terminal-lines"></div>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <span class="t-prompt">❯</span>
+            <span id="terminal-typing"></span>
+            <span class="t-cursor"></span>
           </div>
         </div>
       </div>
