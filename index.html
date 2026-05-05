@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT소프트웨어과 | 수원정보과학고등학교</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:      #0B1E3E;
+      --blue:      #1B4FD8;
+      --sky:       #3B82F6;
+      --cyan:      #06B6D4;
+      --white:     #FFFFFF;
+      --bg:        #F4F6FB;
+      --surface:   #FFFFFF;
+      --text:      #0F172A;
+      --muted:     #64748B;
+      --border:    #E2E8F0;
+      --radius-sm: 8px;
+      --radius:    14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow:    0 4px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05);
+      --shadow-lg: 0 20px 48px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--sky) transparent;
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--sky); border-radius: 99px; }
+
+    body {
+      font-family: 'Noto Sans KR', 'Pretendard', system-ui, sans-serif;
+      background: var(--white);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── REVEAL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-child { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal-child.in-view { opacity: 1; transform: translateY(0); }
+
+    /* ─── UTILITY BAR ─── */
+    .utility-bar {
+      background: var(--navy);
+      color: rgba(255,255,255,0.65);
+      font-size: 0.75rem;
+      padding: 0 2rem;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      z-index: 300;
+    }
+    .utility-bar a { color: rgba(255,255,255,0.65); transition: color .2s; }
+    .utility-bar a:hover { color: #fff; }
+    .utility-left, .utility-right { display: flex; align-items: center; gap: 0; }
+    .utility-left > *, .utility-right > * {
+      padding: 0 1rem;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .utility-left > *:first-child { padding-left: 0; }
+    .utility-right > *:last-child { padding-right: 0; border-right: none; }
+    .utility-right a.highlight {
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      color: #fff !important;
+      padding: 4px 14px;
+      border-radius: 4px;
+      font-weight: 700;
+      border: none;
+      letter-spacing: 0.02em;
+    }
+
+    /* ─── MAIN NAV ─── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .3s;
+    }
+    header.scrolled { box-shadow: var(--shadow); }
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+    .logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+    .logo-top {
+      font-size: 0.68rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .logo-main {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.02em;
+    }
+    .logo-main .dot {
+      width: 8px; height: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(27,79,216,0.15);
+    }
+    nav { display: flex; align-items: center; gap: 0; flex: 1; }
+    .nav-item {
+      position: relative;
+      height: 68px;
+      display: flex;
+      align-items: center;
+    }
+    .nav-item > a {
+      padding: 0 1.1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      position: relative;
+      transition: color .2s;
+    }
+    .nav-item > a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 1.1rem; right: 1.1rem;
+      height: 2px;
+      background: var(--blue);
+      border-radius: 2px 2px 0 0;
+      transform: scaleX(0);
+      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+      transform-origin: center;
+    }
+    .nav-item > a:hover,
+    .nav-item > a.active { color: var(--blue); }
+    .nav-item > a:hover::after,
+    .nav-item > a.active::after { transform: scaleX(1); }
+
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 1rem; }
+    .search-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .search-btn:hover { border-color: var(--sky); color: var(--blue); background: rgba(59,130,246,0.04); }
+    .apply-btn {
+      background: linear-gradient(135deg, var(--blue) 0%, #1a45c4 100%);
+      color: #fff !important;
+      padding: 9px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 700;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(27,79,216,0.35);
+      letter-spacing: 0.01em;
+    }
+    .apply-btn:hover {
+      background: linear-gradient(135deg, #163fad 0%, var(--blue) 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(27,79,216,0.45);
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 90vh;
+      min-height: 560px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Floating particles */
+    #hero::before, #hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    #hero::before {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(27,79,216,0.18) 0%, transparent 70%);
+      top: -100px; right: 5%;
+      animation: floatOrb 8s ease-in-out infinite alternate;
+    }
+    #hero::after {
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(6,182,212,0.14) 0%, transparent 70%);
+      bottom: 10%; left: 10%;
+      animation: floatOrb 11s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes floatOrb {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(20px, -20px) scale(1.05); }
+      100% { transform: translate(-10px, 10px) scale(0.95); }
+    }
+
+    /* Particle dots */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-particles span {
+      position: absolute;
+      display: block;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      animation: particleDrift linear infinite;
+    }
+    @keyframes particleDrift {
+      0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0.6; }
+      50%  { opacity: 1; }
+      100% { transform: translateY(-120px) translateX(20px) scale(0.5); opacity: 0; }
+    }
+
+    .hero-media {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #06112a;
+    }
+    .hero-media img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      animation: kenBurns 14s ease-in-out infinite alternate;
+      transform-origin: center center;
+    }
+    @keyframes kenBurns {
+      0%   { transform: scale(1.0) translate(0%, 0%); }
+      50%  { transform: scale(1.08) translate(-1.5%, -1%); }
+      100% { transform: scale(1.05) translate(1%, 0.5%); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(8,18,50,0.88) 0%, rgba(8,18,50,0.5) 55%, rgba(8,18,50,0.1) 100%),
+        linear-gradient(to top, rgba(5,10,28,0.72) 0%, transparent 45%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: rgba(255,255,255,0.92);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 99px;
+      margin-bottom: 1.8rem;
+      backdrop-filter: blur(8px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--cyan);
+    }
+    .hero-content h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 1.4rem;
+      letter-spacing: -0.03em;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.4);
+    }
+    .hero-content h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, #60C3F7, #06B6D4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-content p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-white {
+      background: #fff;
+      color: var(--navy);
+      padding: 14px 32px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.92rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      letter-spacing: 0.01em;
+    }
+    .btn-white:hover { background: #E8F0FF; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.25); }
+    .btn-ghost {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.45);
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.92rem;
+      transition: var(--transition);
+      backdrop-filter: blur(4px);
+    }
+    .btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+    /* Scroll indicator */
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .hero-scroll-hint .arrow {
+      width: 28px; height: 28px;
+      border: 2px solid rgba(255,255,255,0.35);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      animation: bounceDown 1.8s ease-in-out infinite;
+      font-size: 0.7rem;
+    }
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(5px); }
+    }
+
+    /* ─── STATS BAND ─── */
+    .stats-band {
+      background: linear-gradient(135deg, var(--navy) 0%, #0d2656 100%);
+      color: #fff;
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .stats-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(27,79,216,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 1.2rem;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .stat-num .stat-accent { color: #60C3F7; }
+    .stat-unit { font-size: 1rem; color: #60C3F7; font-weight: 700; }
+    .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 8px; line-height: 1.5; }
+
+    /* ─── SECTION COMMON ─── */
+    section { padding: 5.5rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .sec-head { margin-bottom: 3rem; }
+    .sec-label {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--blue);
+      background: rgba(27,79,216,0.08);
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+    .sec-title {
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      position: relative;
+      padding-left: 1.1rem;
+    }
+    .sec-title::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0.15em; bottom: 0.1em;
+      width: 4px;
+      background: linear-gradient(180deg, var(--blue), var(--cyan));
+      border-radius: 2px;
+    }
+    .sec-sub {
+      margin-top: 0.75rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 520px;
+      line-height: 1.75;
+    }
+    .sec-head.center { text-align: center; }
+    .sec-head.center .sec-title { padding-left: 0; }
+    .sec-head.center .sec-title::before { display: none; }
+    .sec-head.center .sec-sub { margin-left: auto; margin-right: auto; }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--bg); }
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4.5rem;
+      align-items: center;
+    }
+
+    .photo-block {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: visible;
+    }
+    .photo-main {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #DBEAFE, #EFF6FF);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue);
+      font-size: 0.9rem;
+      border: 2px dashed #BFDBFE;
+      gap: 8px;
+      object-fit: cover;
+      box-shadow: 0 20px 60px rgba(11,30,62,0.18), 0 4px 20px rgba(27,79,216,0.12);
+    }
+    .photo-main .ph-icon { font-size: 2.5rem; }
+    /* decorative border ring */
+    .photo-block::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: calc(var(--radius-lg) + 6px);
+      background: linear-gradient(135deg, var(--blue), var(--cyan), transparent 60%);
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    /* floating award badge */
+    .photo-badge {
+      position: absolute;
+      top: 1.2rem; right: -1rem;
+      background: linear-gradient(135deg, var(--blue), #1a45c4);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 8px 16px;
+      border-radius: 99px;
+      box-shadow: 0 6px 20px rgba(27,79,216,0.45);
+      white-space: nowrap;
+      z-index: 5;
+      letter-spacing: 0.04em;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    .photo-badge::before {
+      content: '🏆 ';
+    }
+
+    .photo-sub-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .photo-sub {
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #E0F2FE, #F0F9FF);
+      border-radius: var(--radius-sm);
+      border: 2px dashed #BAE6FD;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan);
+      font-size: 0.78rem;
+      gap: 4px;
+      overflow: hidden;
+    }
+
+    .about-text .feat-list { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 2rem; }
+    .feat {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 1.1rem 1.4rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      border-radius: var(--radius);
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .feat:hover { box-shadow: var(--shadow); transform: translateX(4px); border-left-color: var(--cyan); }
+    .feat-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .feat h4 { font-size: 0.93rem; font-weight: 700; margin-bottom: 3px; color: var(--navy); }
+    .feat p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── AWARDS BAND ─── */
+    #awards {
+      background: var(--bg);
+      padding: 4.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    #awards::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(27,79,216,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .awards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+    .award-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.5rem;
+      text-align: center;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .award-card:nth-child(1) { border-top-color: #F59E0B; }
+    .award-card:nth-child(2) { border-top-color: var(--sky); }
+    .award-card:nth-child(3) { border-top-color: #10B981; }
+    .award-card:nth-child(4) { border-top-color: #8B5CF6; }
+    .award-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transform: scaleX(0);
+      transition: transform .3s ease;
+    }
+    .award-card:hover::after { transform: scaleX(1); }
+    .award-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); }
+    .award-card .award-icon { font-size: 2.2rem; margin-bottom: 0.75rem; display: block; }
+    .award-card .award-title { font-size: 0.92rem; font-weight: 800; color: var(--navy); margin-bottom: 0.4rem; line-height: 1.35; }
+    .award-card .award-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+    .award-card .award-year {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: rgba(27,79,216,0.08);
+      color: var(--blue);
+      padding: 3px 12px;
+      border-radius: 99px;
+      margin-top: 0.8rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── CURRICULUM ─── */
+    #curriculum { background: var(--white); }
+    .year-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+      padding: 4px;
+      background: var(--bg);
+      border-radius: var(--radius);
+      width: fit-content;
+    }
+    .ytab {
+      padding: 9px 26px;
+      border: none;
+      background: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: calc(var(--radius) - 4px);
+      transition: var(--transition);
+      font-family: inherit;
+      letter-spacing: 0.01em;
+    }
+    .ytab.active {
+      color: var(--blue);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+    .ytab:not(.active):hover { color: var(--text); background: rgba(255,255,255,0.6); }
+    .year-panel { display: none; }
+    .year-panel.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+    .subj-card {
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: var(--transition);
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+    .subj-card:hover {
+      box-shadow: var(--shadow);
+      transform: translateY(-4px);
+      border-color: #93C5FD;
+      border-left-color: var(--sky);
+    }
+    .subj-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+    }
+    .subj-card h4 { font-size: 0.93rem; font-weight: 700; margin-bottom: 5px; color: var(--navy); }
+    .subj-card p { font-size: 0.81rem; color: var(--muted); line-height: 1.65; }
+    .subj-badge {
+      display: inline-block;
+      font-size: 0.67rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-top: 0.8rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── CURRICULUM PORTFOLIO STRIP ─── */
+    .pf-strip {
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 2px solid var(--border);
+    }
+    .pf-strip-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--blue);
+      background: rgba(27,79,216,0.08);
+      padding: 4px 14px;
+      border-radius: 99px;
+      display: inline-block;
+      margin-bottom: 0.7rem;
+      text-transform: uppercase;
+    }
+    .pf-strip-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 1.6rem;
+      letter-spacing: -0.01em;
+    }
+    .pf-strip-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .pf-strip-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--white);
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .pf-strip-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-5px);
+    }
+    .pf-strip-thumb {
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      position: relative;
+    }
+    .pf-strip-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11,30,62,0.6) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .pf-strip-card:hover .pf-strip-thumb::after { opacity: 1; }
+    .pf-strip-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .4s cubic-bezier(0.4,0,0.2,1);
+      display: block;
+    }
+    .pf-strip-card:hover .pf-strip-thumb img { transform: scale(1.06); }
+    .pf-strip-body { padding: 1.1rem 1.25rem; }
+    .pf-strip-yr {
+      font-size: 0.67rem;
+      font-weight: 700;
+      background: var(--navy);
+      color: #fff;
+      padding: 3px 10px;
+      border-radius: 99px;
+      display: inline-block;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.04em;
+    }
+    .pf-strip-body h4 { font-size: 0.9rem; font-weight: 800; color: var(--navy); margin-bottom: 0.35rem; }
+    .pf-strip-body p  { font-size: 0.78rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.75rem; }
+    .pf-strip-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .pf-strip-tags span {
+      font-size: 0.65rem; font-weight: 600;
+      background: rgba(27,79,216,0.07); color: var(--blue);
+      padding: 2px 8px; border-radius: 4px;
+      border: 1px solid rgba(27,79,216,0.12);
+    }
+
+    /* ─── GALLERY ─── */
+    #gallery {
+      background: var(--bg);
+      position: relative;
+    }
+    #gallery::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(27,79,216,0.04) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 200px;
+      gap: 12px;
+      position: relative;
+    }
+    .g-item {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .55s ease, transform .55s ease, box-shadow .25s;
+    }
+    .g-item.tall { grid-row: span 2; }
+    .g-item.wide { grid-column: span 2; }
+    .g-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .5s cubic-bezier(0.4,0,0.2,1);
+      display: block;
+    }
+    .g-item:hover img { transform: scale(1.08); }
+    .g-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11,30,62,0.88) 0%, rgba(11,30,62,0.3) 50%, transparent 100%);
+      opacity: 0;
+      transition: opacity .35s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem 1.1rem;
+      transform: translateY(6px);
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    .g-item:hover .g-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .g-overlay span {
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.3;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      border-left: 3px solid var(--cyan);
+      padding-left: 8px;
+    }
+    .g-item.visible { opacity: 1; transform: translateY(0); }
+    .g-item:hover { box-shadow: 0 12px 36px rgba(0,0,0,0.22); }
+    .gallery-more {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+    .btn-outline {
+      display: inline-block;
+      border: 2px solid var(--blue);
+      color: var(--blue);
+      padding: 12px 32px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.88rem;
+      transition: var(--transition);
+      letter-spacing: 0.01em;
+    }
+    .btn-outline:hover { background: var(--blue); color: #fff; box-shadow: 0 4px 16px rgba(27,79,216,0.3); transform: translateY(-1px); }
+
+    /* ─── CAREER ─── */
+    #career { background: var(--white); }
+    .career-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4.5rem;
+      align-items: start;
+    }
+    .career-tabs {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .ctab {
+      padding: 8px 20px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      background: none;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .ctab.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+      box-shadow: 0 4px 14px rgba(27,79,216,0.35);
+    }
+    .ctab:not(.active):hover { border-color: var(--sky); color: var(--blue); }
+    .career-panel { display: none; }
+    .career-panel.active { display: flex; flex-direction: column; gap: 0.7rem; }
+    .c-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: var(--transition);
+      background: var(--white);
+    }
+    .c-card:hover {
+      box-shadow: var(--shadow);
+      border-color: #93C5FD;
+      transform: translateX(4px);
+    }
+    .c-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .c-card h5 { font-size: 0.91rem; font-weight: 700; color: var(--navy); }
+    .c-card p  { font-size: 0.79rem; color: var(--muted); }
+
+    .career-photo {
+      aspect-ratio: 4/5;
+      border-radius: var(--radius-lg);
+      overflow: visible;
+      position: relative;
+    }
+    .career-photo::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: calc(var(--radius-lg) + 8px);
+      background: linear-gradient(135deg, var(--cyan), var(--blue), transparent 60%);
+      z-index: -1;
+      opacity: 0.5;
+    }
+    .career-photo::after {
+      content: '';
+      position: absolute;
+      bottom: -8px; right: -8px;
+      width: 60%; height: 60%;
+      border-radius: var(--radius-lg);
+      border: 2px solid rgba(27,79,216,0.15);
+      z-index: -1;
+    }
+    .career-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* ─── ADMISSION ─── */
+    #admission { background: var(--bg); }
+    .adm-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .adm-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .adm-box h3 {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+    .score-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+    .score-table thead tr { background: linear-gradient(135deg, rgba(27,79,216,0.07), rgba(59,130,246,0.05)); }
+    .score-table th {
+      padding: 11px 14px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--blue);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .score-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text); }
+    .score-table tbody tr:nth-child(even) td { background: rgba(244,246,251,0.6); }
+    .score-table tr:last-child td {
+      border-bottom: none;
+      background: linear-gradient(135deg, rgba(27,79,216,0.06), rgba(59,130,246,0.04));
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-item {
+      display: flex;
+      gap: 16px;
+      padding-bottom: 1.5rem;
+      position: relative;
+    }
+    .tl-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 15px; top: 34px; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--blue), rgba(59,130,246,0.2));
+    }
+    .tl-dot {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      z-index: 1;
+      box-shadow: 0 0 0 4px rgba(27,79,216,0.15);
+      animation: none;
+    }
+    .tl-item:first-child .tl-dot {
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(27,79,216,0.15); }
+      50%       { box-shadow: 0 0 0 8px rgba(27,79,216,0.08); }
+    }
+    .tl-body h5 { font-size: 0.91rem; font-weight: 700; color: var(--navy); padding-top: 5px; }
+    .tl-body p { font-size: 0.81rem; color: var(--muted); margin-top: 2px; }
+
+    /* ─── PORTFOLIO ─── */
+    #portfolio {
+      background: var(--navy);
+      padding: 5.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    #portfolio::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    #portfolio::after {
+      content: '';
+      position: absolute;
+      top: -120px; right: -100px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(27,79,216,0.25) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    #portfolio .sec-label { background: rgba(255,255,255,0.08); color: #93C5FD; border: 1px solid rgba(255,255,255,0.12); }
+    #portfolio .sec-title { color: #fff; }
+    #portfolio .sec-title::before { background: linear-gradient(180deg, #60C3F7, var(--cyan)); }
+    #portfolio .sec-head.center .sec-title::before { display: none; }
+    #portfolio .sec-sub { color: rgba(255,255,255,0.55); }
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-bottom: 4rem;
+      position: relative;
+      z-index: 1;
+    }
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      top: 28px; left: 16.6%; right: 16.6%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--blue));
+      opacity: 0.5;
+    }
+    .rm-step { text-align: center; padding: 0 1.5rem; position: relative; }
+    .rm-dot {
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #fff;
+      margin: 0 auto 1.1rem;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 0 4px rgba(27,79,216,0.3), 0 8px 24px rgba(27,79,216,0.4);
+    }
+    .rm-year { font-size: 0.7rem; font-weight: 700; color: #60C3F7; letter-spacing: 0.1em; margin-bottom: 0.4rem; text-transform: uppercase; }
+    .rm-title { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .rm-desc { font-size: 0.78rem; color: rgba(255,255,255,0.5); line-height: 1.65; }
+    .pf-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .pf-card {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .pf-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.09);
+    }
+    .pf-thumb {
+      aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+    .pf-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+    .pf-card:hover .pf-thumb img { transform: scale(1.06); }
+    .pf-body { padding: 1.5rem; }
+    .pf-year-badge {
+      font-size: 0.67rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      color: #fff;
+      padding: 3px 12px;
+      border-radius: 99px;
+      display: inline-block;
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.04em;
+    }
+    .pf-body h4 { font-size: 1rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+    .pf-body p { font-size: 0.81rem; color: rgba(255,255,255,0.58); line-height: 1.65; margin-bottom: 1rem; }
+    .pf-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .pf-tag {
+      font-size: 0.67rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.7);
+      padding: 4px 11px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: background .2s;
+    }
+    .pf-card:hover .pf-tag { background: rgba(255,255,255,0.1); }
+
+    /* ─── NEWS ─── */
+    #news { background: var(--white); }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .news-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--transition);
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+    .news-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); }
+    .news-thumb {
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      position: relative;
+    }
+    .news-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(11,30,62,0.5) 100%);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .news-card:hover .news-thumb::after { opacity: 1; }
+    .news-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+    .news-card:hover .news-thumb img { transform: scale(1.06); }
+    .news-body { padding: 1.35rem; }
+    .news-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--blue);
+      background: rgba(27,79,216,0.08);
+      padding: 3px 10px;
+      border-radius: 99px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 0.6rem;
+      border: 1px solid rgba(27,79,216,0.12);
+    }
+    .news-badge::before {
+      content: '';
+      width: 5px; height: 5px;
+      background: var(--blue);
+      border-radius: 50%;
+    }
+    .news-body h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.45rem; line-height: 1.45; color: var(--navy); }
+    .news-body p { font-size: 0.79rem; color: var(--muted); line-height: 1.65; }
+    .news-body .news-date {
+      font-size: 0.72rem;
+      color: #94A3B8;
+      margin-top: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+    #contact::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    #contact::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+    .contact-layout .sec-label { background: rgba(255,255,255,0.08); color: #93C5FD; border: 1px solid rgba(255,255,255,0.12); }
+    .contact-layout .sec-title { color: #fff; }
+    .contact-layout .sec-title::before { background: linear-gradient(180deg, #60C3F7, var(--cyan)); }
+    .contact-info { display: flex; flex-direction: column; gap: 0.9rem; }
+    .ci-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 1.1rem 1.4rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      backdrop-filter: blur(8px);
+      transition: var(--transition);
+    }
+    .ci-item:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.15);
+      transform: translateX(4px);
+    }
+    .ci-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, rgba(27,79,216,0.4), rgba(59,130,246,0.3));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .ci-item h5 { font-size: 0.74rem; color: rgba(255,255,255,0.45); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+    .ci-item p { font-size: 0.9rem; color: #fff; font-weight: 600; margin-top: 2px; }
+
+    .map-area {
+      aspect-ratio: 4/3;
+      background: rgba(255,255,255,0.04);
+      border: 2px dashed rgba(255,255,255,0.15);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.35);
+      gap: 10px;
+    }
+    .map-area span { font-size: 3rem; }
+    .map-area p { font-size: 0.85rem; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #060E1C;
+      color: rgba(255,255,255,0.4);
+      position: relative;
+    }
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 80px;
+      background: linear-gradient(to bottom, rgba(11,30,62,0.6) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .footer-top {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 2.5rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+      position: relative;
+    }
+    .ft-brand h3 { color: #fff; font-size: 1rem; font-weight: 800; margin-bottom: 0.6rem; line-height: 1.4; }
+    .ft-brand p { font-size: 0.81rem; line-height: 1.75; max-width: 240px; }
+    .ft-social {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1.2rem;
+    }
+    .ft-social a {
+      width: 34px; height: 34px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      color: rgba(255,255,255,0.5);
+    }
+    .ft-social a:hover {
+      background: rgba(27,79,216,0.4);
+      border-color: var(--blue);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    .ft-col h4 {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .ft-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .ft-col ul a { font-size: 0.81rem; transition: color .2s, padding-left .2s; display: block; }
+    .ft-col ul a:hover { color: rgba(255,255,255,0.85); padding-left: 4px; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.4rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+    }
+
+    /* ─── HERO MEDIA HINT ─── */
+    .hero-media-hint {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px dashed rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.5);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      z-index: 3;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .utility-bar { display: none; }
+      .main-nav { gap: 1rem; padding: 0 1rem; }
+      nav { display: none; }
+      #hero { height: 75vh; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .awards-grid { grid-template-columns: repeat(2, 1fr); }
+      .pf-grid { grid-template-columns: 1fr; }
+      .roadmap { grid-template-columns: 1fr; gap: 1.5rem; }
+      .roadmap::before { display: none; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .g-item.tall { grid-row: span 1; }
+      .g-item.wide { grid-column: span 2; }
+      .pf-strip-grid { grid-template-columns: 1fr; }
+      .about-layout,
+      .career-layout,
+      .adm-layout,
+      .contact-layout { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .g-item.big { grid-column: span 2; grid-row: auto; }
+      .g-item.mid,
+      .g-item.sm  { grid-column: span 1; }
+      .news-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .photo-badge { right: 0.5rem; }
+      .sec-title { padding-left: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- UTILITY BAR -->
+<div class="utility-bar">
+  <div class="utility-left">
+    <span>수원정보과학고등학교</span>
+    <a href="#">학교 공식 홈페이지 →</a>
+  </div>
+  <div class="utility-right">
+    <a href="#curriculum">교육과정</a>
+    <a href="#career">진로</a>
+    <a href="#contact">연락처</a>
+    <a href="#admission" class="highlight">입학 안내</a>
+  </div>
+</div>
+
+<!-- HEADER / NAV -->
+<header>
+  <div class="main-nav">
+    <a href="#hero" class="logo">
+      <span class="logo-top">수원정보과학고등학교</span>
+      <span class="logo-main"><span class="dot"></span>IT소프트웨어과</span>
+    </a>
+    <nav>
+      <div class="nav-item"><a href="#about">학과 소개</a></div>
+      <div class="nav-item"><a href="#awards">수상 성과</a></div>
+      <div class="nav-item"><a href="#curriculum">교육과정</a></div>
+      <div class="nav-item"><a href="#gallery">학교생활</a></div>
+      <div class="nav-item"><a href="#career">진로</a></div>
+      <div class="nav-item"><a href="#portfolio">포트폴리오</a></div>
+      <div class="nav-item"><a href="#news">소식</a></div>
+      <div class="nav-item"><a href="#admission">입학 안내</a></div>
+    </nav>
+    <div class="nav-right">
+      <button class="search-btn">🔍 검색</button>
+      <a href="#admission" class="apply-btn">지원하기</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<!-- ★ 히어로 배경: 동영상은 .hero-media 안에 <video> 태그, 사진은 background-image CSS로 추가해주세요 -->
+<section id="hero">
+  <div class="hero-media">
+    <img src="main.png" alt="IT소프트웨어과" />
+  </div>
+  <div class="hero-overlay"></div>
+  <!-- floating particles -->
+  <div class="hero-particles">
+    <span style="width:4px;height:4px;left:15%;top:70%;animation-duration:6s;animation-delay:0s;"></span>
+    <span style="width:3px;height:3px;left:25%;top:80%;animation-duration:8s;animation-delay:1s;"></span>
+    <span style="width:5px;height:5px;left:40%;top:75%;animation-duration:7s;animation-delay:2s;"></span>
+    <span style="width:3px;height:3px;left:60%;top:85%;animation-duration:9s;animation-delay:0.5s;"></span>
+    <span style="width:4px;height:4px;left:75%;top:72%;animation-duration:6.5s;animation-delay:3s;"></span>
+    <span style="width:2px;height:2px;left:85%;top:78%;animation-duration:7.5s;animation-delay:1.5s;"></span>
+    <span style="width:3px;height:3px;left:50%;top:68%;animation-duration:8.5s;animation-delay:2.5s;"></span>
+    <span style="width:5px;height:5px;left:30%;top:60%;animation-duration:10s;animation-delay:0.8s;"></span>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag">수원정보과학고등학교 · IT소프트웨어과</div>
+    <h1>코드로 세상을 바꾸는<br /><em>소프트웨어 인재</em>를<br />키웁니다</h1>
+    <p>알고리즘부터 앱 개발, 인공지능까지 — 실무 중심 커리큘럼으로 소프트웨어 산업의 핵심 인재를 양성합니다.</p>
+    <div class="hero-btns">
+      <a href="#admission" class="btn-white">입학 안내 보기</a>
+      <a href="#about" class="btn-ghost">학과 소개 →</a>
+    </div>
+  </div>
+  <!-- scroll indicator -->
+  <div class="hero-scroll-hint">
+    <div class="arrow">↓</div>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <div class="stat-num"><span class="stat-accent">2</span><span class="stat-unit">년</span> 연속</div>
+      <div class="stat-label">미래유망 고졸인력양성 우수사례 수상</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num"><span class="stat-accent">12</span><span class="stat-unit">명</span></div>
+      <div class="stat-label">훈련생 20명 중 취업·현장실습 성공</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">역대<span class="stat-unit"> 최고</span></div>
+      <div class="stat-label">2025년 학과 전체 취업률</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">금감원<span class="stat-unit"> 합격</span></div>
+      <div class="stat-label">금융감독원 포함 다양한 기업 취업</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-layout">
+      <div class="photo-block reveal">
+        <div class="photo-badge">우수사례 수상</div>
+        <img src="images/2024_p2_img2.jpeg" class="photo-main" style="object-fit:cover;border:none;" alt="IT소프트웨어과 실습 수업" />
+        <div class="photo-sub-row">
+          <div class="photo-sub" style="border:none;background:none;padding:0;">
+            <img src="images/2025_p5_img2.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.1);" alt="코딩 실습" />
+          </div>
+          <div class="photo-sub" style="border:none;background:none;padding:0;">
+            <img src="images/2025_p2_img1.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.1);" alt="미래유망 워크숍" />
+          </div>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <div class="sec-head">
+          <span class="sec-label">ABOUT</span>
+          <h2 class="sec-title">소질을 발견하고<br />꿈을 키우는 학과</h2>
+          <p class="sec-sub">학생들이 자신의 소질과 적성을 발견하고, 알고리즘과 프로그래밍부터 소프트웨어 개발까지 실무 능력을 단계적으로 익혀 다양한 소프트웨어 분야로 나아갈 수 있는 기반을 마련합니다.</p>
+        </div>
+        <div class="feat-list">
+          <div class="feat reveal-child">
+            <div class="feat-icon">💻</div>
+            <div>
+              <h4>플립러닝 & 프로젝트 중심 수업</h4>
+              <p>짝코딩, 코딩 리뷰, 포트폴리오 제작 등 학생 주도의 실무 중심 수업을 운영합니다.</p>
+            </div>
+          </div>
+          <div class="feat reveal-child">
+            <div class="feat-icon">🏢</div>
+            <div>
+              <h4>그린컴퓨터아카데미 산학 협력</h4>
+              <p>훈련 기관과 협업해 교과과정과 연계된 직업 훈련으로 현장 맞춤형 인재를 양성합니다.</p>
+            </div>
+          </div>
+          <div class="feat reveal-child">
+            <div class="feat-icon">🏆</div>
+            <div>
+              <h4>전국 대회 입상 & 자격증 취득</h4>
+              <p>경기도 기능경기대회, K-TECH 아이디어 챌린지 등 전국 단위 대회에서 꾸준히 입상하고 있습니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="sec-label">AWARDS</span>
+      <h2 class="sec-title">수상 & 주요 성과</h2>
+      <p class="sec-sub">IT소프트웨어과의 교육 성과는 전국 단위 대회 입상과 취업 실적으로 증명됩니다.</p>
+    </div>
+    <div class="awards-grid">
+      <div class="award-card reveal-child">
+        <div class="award-icon">🥇</div>
+        <div class="award-title">미래유망 우수사례 대상</div>
+        <div class="award-desc">고졸인력양성사업 우수사례 공동 대상 수상</div>
+        <span class="award-year">2024</span>
+      </div>
+      <div class="award-card reveal-child">
+        <div class="award-icon">🥈</div>
+        <div class="award-title">미래유망 우수사례 장려상</div>
+        <div class="award-desc">2년 연속 우수사례 단일부문 장려상 수상</div>
+        <span class="award-year">2025</span>
+      </div>
+      <div class="award-card reveal-child">
+        <div class="award-icon">🎮</div>
+        <div class="award-title">경기도 기능경기대회 은상</div>
+        <div class="award-desc">게임개발 분야 은상 · 웹디자인 동상·장려상</div>
+        <span class="award-year">2024–2025</span>
+      </div>
+      <div class="award-card reveal-child">
+        <div class="award-icon">💡</div>
+        <div class="award-title">K-TECH 아이디어 챌린지</div>
+        <div class="award-desc">창의융합 아이디어 챌린지 장려상 2팀 수상</div>
+        <span class="award-year">2025</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section id="curriculum">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-label">CURRICULUM</span>
+      <h2 class="sec-title">교육과정</h2>
+      <p class="sec-sub">1학년부터 3학년까지 단계적으로 심화되는 커리큘럼입니다.</p>
+    </div>
+    <div class="year-tabs">
+      <button class="ytab active" onclick="switchYear('y1')">1학년</button>
+      <button class="ytab" onclick="switchYear('y2')">2학년</button>
+      <button class="ytab" onclick="switchYear('y3')">3학년</button>
+    </div>
+    <div id="y1" class="year-panel active">
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#EFF6FF;">🌐</div>
+        <h4>HTML5 + CSS3</h4>
+        <p>웹 표준과 접근성 개념을 습득하고 기본 태그 구조와 스타일링을 학습합니다.</p>
+        <span class="subj-badge" style="background:#EFF6FF;color:#1A56DB;">기초 필수 · 52H</span>
+      </div>
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#F0FDF4;">⚡</div>
+        <h4>JavaScript 기초</h4>
+        <p>자바스크립트를 활용한 동적 웹 페이지 제작과 인터랙션 구현 능력을 기릅니다.</p>
+        <span class="subj-badge" style="background:#F0FDF4;color:#16A34A;">기초 필수 · 21H</span>
+      </div>
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#FFF7ED;">📱</div>
+        <h4>Bootstrap 반응형 웹</h4>
+        <p>Bootstrap 프레임워크로 모바일·태블릿·데스크톱 3종 디바이스 대응 레이아웃을 완성합니다.</p>
+        <span class="subj-badge" style="background:#FFF7ED;color:#EA580C;">프로젝트 · 75H</span>
+      </div>
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#F5F3FF;">🚀</div>
+        <h4>GitHub 포트폴리오 배포</h4>
+        <p>완성한 반응형 웹사이트를 GitHub Pages로 직접 배포하고 발표 영상을 제작합니다.</p>
+        <span class="subj-badge" style="background:#F5F3FF;color:#7C3AED;">실전 배포</span>
+      </div>
+    </div>
+    <div id="y2" class="year-panel">
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#FEF9C3;">☕</div>
+        <h4>Java 프로그래밍</h4>
+        <p>객체지향 개념을 학습하고 JSP·Servlet으로 서버 사이드 웹 애플리케이션을 구현합니다.</p>
+        <span class="subj-badge" style="background:#FEF9C3;color:#CA8A04;">심화 · 60H</span>
+      </div>
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#EDE9FE;">🗄️</div>
+        <h4>데이터베이스 (Oracle DB)</h4>
+        <p>Oracle DB 기반 SQL 데이터 관리로 로그인·회원가입·CRUD 게시판 기능을 구현합니다.</p>
+        <span class="subj-badge" style="background:#EDE9FE;color:#7C3AED;">심화</span>
+      </div>
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#FCE7F3;">🏗️</div>
+        <h4>MVC 패턴 웹 프로젝트</h4>
+        <p>MVC 구조로 기능별 역할을 분리하고 유지보수 가능한 웹 서비스 구조를 설계합니다.</p>
+        <span class="subj-badge" style="background:#FCE7F3;color:#DB2777;">프로젝트 · 51H</span>
+      </div>
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#F0FDF4;">🎨</div>
+        <h4>UI/UX 디자인 도구</h4>
+        <p>Figma·Photoshop·Illustrator로 화면 설계와 와이어프레임을 직접 제작합니다.</p>
+        <span class="subj-badge" style="background:#F0FDF4;color:#16A34A;">디자인</span>
+      </div>
+    </div>
+    <div id="y3" class="year-panel">
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#EFF6FF;">🍃</div>
+        <h4>Spring Boot</h4>
+        <p>Spring Boot·JPA·Spring Security로 인증·권한·RESTful API를 구현하는 실무형 백엔드를 학습합니다.</p>
+        <span class="subj-badge" style="background:#EFF6FF;color:#1A56DB;">심화 · 79H</span>
+      </div>
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#FFE4E6;">🤖</div>
+        <h4>AI API 연동</h4>
+        <p>Open AI API를 Spring Boot 프로젝트에 연동해 AI 기능이 탑재된 실무형 서비스를 개발합니다.</p>
+        <span class="subj-badge" style="background:#FFE4E6;color:#E11D48;">응용</span>
+      </div>
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#DCFCE7;">☁️</div>
+        <h4>AWS 클라우드 배포</h4>
+        <p>AWS S3·Lightsail을 활용해 실제 서버에 서비스를 배포하고 운영하는 경험을 쌓습니다.</p>
+        <span class="subj-badge" style="background:#DCFCE7;color:#16A34A;">클라우드</span>
+      </div>
+      <div class="subj-card">
+        <div class="subj-icon" style="background:#FFF7ED;">👥</div>
+        <h4>팀 협업 & GitHub</h4>
+        <p>GitHub 브랜치 전략으로 코드 리뷰·기능 병합·오류 해결 등 실무 협업 프로세스를 경험합니다.</p>
+        <span class="subj-badge" style="background:#FFF7ED;color:#EA580C;">협업</span>
+      </div>
+    </div>
+
+    <!-- 가로형 포트폴리오 스트립 -->
+    <div class="pf-strip">
+      <span class="pf-strip-label">STUDENT PROJECTS</span>
+      <p class="pf-strip-title">3년간 학생들이 직접 만든 실제 작품</p>
+      <div class="pf-strip-grid">
+        <div class="pf-strip-card reveal-child">
+          <div class="pf-strip-thumb">
+            <img src="images/pf_p4_img1.jpg" alt="PayPal 반응형 웹" />
+          </div>
+          <div class="pf-strip-body">
+            <span class="pf-strip-yr">1학년</span>
+            <h4>PayPal 반응형 웹 클론</h4>
+            <p>HTML·CSS·Bootstrap으로 글로벌 서비스 UI를 재현하고 GitHub Pages에 직접 배포한 첫 실무형 프로젝트.</p>
+            <div class="pf-strip-tags">
+              <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Bootstrap</span><span>GitHub Pages</span>
+            </div>
+          </div>
+        </div>
+        <div class="pf-strip-card reveal-child">
+          <div class="pf-strip-thumb">
+            <img src="images/pf_p8_img1.jpg" alt="Impact 쇼핑몰" />
+          </div>
+          <div class="pf-strip-body">
+            <span class="pf-strip-yr">2학년</span>
+            <h4>Impact 풀스택 웹 쇼핑몰</h4>
+            <p>Java·JSP·Oracle DB로 관리자·사용자 기능을 모두 갖춘 MVC 패턴 풀스택 쇼핑몰 서비스 완성.</p>
+            <div class="pf-strip-tags">
+              <span>Java</span><span>JSP/Servlet</span><span>Oracle DB</span><span>MVC</span><span>Figma</span>
+            </div>
+          </div>
+        </div>
+        <div class="pf-strip-card reveal-child">
+          <div class="pf-strip-thumb">
+            <img src="images/pf_p12_img2.jpg" alt="MetaCraft AssetStore" />
+          </div>
+          <div class="pf-strip-body">
+            <span class="pf-strip-yr">3학년</span>
+            <h4>MetaCraft AssetStore</h4>
+            <p>Spring Boot·AWS S3·Unity를 팀 협업으로 연동한 3D 에셋 공유 플랫폼. 실서버 배포까지 완성.</p>
+            <div class="pf-strip-tags">
+              <span>Spring Boot</span><span>AWS S3</span><span>Unity</span><span>JPA</span><span>Spring Security</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<!-- ★ 갤러리 사진: g-placeholder div를 <img> 태그로 교체해주세요 -->
+<section id="gallery">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="sec-label">GALLERY</span>
+      <h2 class="sec-title">학교생활 갤러리</h2>
+      <p class="sec-sub">수업 현장부터 행사, 프로젝트 발표까지 — IT소프트웨어과의 일상을 담았습니다.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="g-item tall">
+        <img src="images/2024_p3_img3.jpeg" alt="미래유망 워크숍 단체사진" />
+        <div class="g-overlay"><span>미래유망 워크숍</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2024_p3_img7.jpeg" alt="선생님과 수업" />
+        <div class="g-overlay"><span>전문가 수업</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2024_p2_img2.jpeg" alt="실습실 수업 전경" />
+        <div class="g-overlay"><span>실습실 수업</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2025_p5_img2.jpg" alt="코딩 실습" />
+        <div class="g-overlay"><span>코딩 실습</span></div>
+      </div>
+      <div class="g-item wide">
+        <img src="images/2025_p3_img2.jpg" alt="K-TECH 아이디어 챌린지 장려상" />
+        <div class="g-overlay"><span>K-TECH 아이디어 챌린지 장려상</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2024_p3_img8.jpeg" alt="아이디어 기획" />
+        <div class="g-overlay"><span>아이디어 기획</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2024_p3_img4.jpeg" alt="선배와의 대화" />
+        <div class="g-overlay"><span>선배와의 대화</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2025_p6_img2.jpg" alt="웹 프로젝트 발표" />
+        <div class="g-overlay"><span>웹 프로젝트 발표</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2024_p3_img10.jpeg" alt="취업 세미나" />
+        <div class="g-overlay"><span>취업 세미나</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2025_p4_img1.jpg" alt="경기도 기능경기대회 은상" />
+        <div class="g-overlay"><span>경기도 기능경기대회 은상</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2024_p3_img1.jpeg" alt="디지털미디어 테크쇼 참가" />
+        <div class="g-overlay"><span>디지털미디어 테크쇼</span></div>
+      </div>
+      <div class="g-item">
+        <img src="images/2025_p6_img1.jpg" alt="아주대 캠퍼스 방문" />
+        <div class="g-overlay"><span>대학 캠퍼스 탐방</span></div>
+      </div>
+    </div>
+    <div class="gallery-more">
+      <a href="#" class="btn-outline">사진 더 보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER -->
+<section id="career">
+  <div class="container">
+    <div class="career-layout">
+      <div>
+        <div class="sec-head reveal">
+          <span class="sec-label">CAREER</span>
+          <h2 class="sec-title">졸업 후 진로</h2>
+          <p class="sec-sub">취업과 진학 — 두 가지 경로를 모두 지원합니다.</p>
+        </div>
+        <div class="career-tabs">
+          <button class="ctab active" onclick="switchCareer('employ')">💼 취업</button>
+          <button class="ctab" onclick="switchCareer('univ')">🎓 진학</button>
+          <button class="ctab" onclick="switchCareer('cert')">📋 자격증</button>
+        </div>
+        <div id="employ" class="career-panel active">
+          <div class="c-card"><div class="c-icon">💻</div><div><h5>소프트웨어 개발자</h5><p>응용 SW · 앱 개발</p></div></div>
+          <div class="c-card"><div class="c-icon">🌐</div><div><h5>웹 개발자</h5><p>프론트엔드 · 백엔드</p></div></div>
+          <div class="c-card"><div class="c-icon">🤖</div><div><h5>임베디드 개발자</h5><p>IoT · 펌웨어 개발</p></div></div>
+          <div class="c-card"><div class="c-icon">🛡️</div><div><h5>보안 전문가</h5><p>네트워크 · 시스템 보안</p></div></div>
+          <div class="c-card"><div class="c-icon">📊</div><div><h5>데이터 분석가</h5><p>DB · 데이터 처리</p></div></div>
+        </div>
+        <div id="univ" class="career-panel">
+          <div class="c-card"><div class="c-icon">🏫</div><div><h5>4년제 대학교</h5><p>컴퓨터공학 · 소프트웨어학부</p></div></div>
+          <div class="c-card"><div class="c-icon">🏫</div><div><h5>전문대학교</h5><p>정보통신 · 소프트웨어과</p></div></div>
+          <div class="c-card"><div class="c-icon">🎓</div><div><h5>특기자 전형</h5><p>기능대회 입상자 특별 전형</p></div></div>
+          <div class="c-card"><div class="c-icon">📚</div><div><h5>재직자 특별전형</h5><p>취업 후 대학 진학 가능</p></div></div>
+        </div>
+        <div id="cert" class="career-panel">
+          <div class="c-card"><div class="c-icon">📜</div><div><h5>정보처리기능사</h5><p>국가기술자격증</p></div></div>
+          <div class="c-card"><div class="c-icon">📜</div><div><h5>컴퓨터활용능력 1·2급</h5><p>대한상공회의소</p></div></div>
+          <div class="c-card"><div class="c-icon">📜</div><div><h5>리눅스마스터 2급</h5><p>한국정보통신진흥협회</p></div></div>
+          <div class="c-card"><div class="c-icon">📜</div><div><h5>네트워크관리사 2급</h5><p>한국정보통신자격협회</p></div></div>
+        </div>
+      </div>
+      <div class="career-photo reveal">
+        <img src="images/2024_p3_img11.jpeg" alt="IT소프트웨어과 코딩 수업" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="sec-label">PORTFOLIO</span>
+      <h2 class="sec-title">학생 작품 포트폴리오</h2>
+      <p class="sec-sub">기초에서 실무로 — 3년의 성장 여정을 담은 학생들의 실제 프로젝트입니다.</p>
+    </div>
+
+    <div class="roadmap">
+      <div class="rm-step reveal-child">
+        <div class="rm-dot">1</div>
+        <div class="rm-year">1학년 · 168H</div>
+        <div class="rm-title">웹 프론트엔드 기초</div>
+        <div class="rm-desc">HTML5 · CSS3 · JavaScript<br />Bootstrap 반응형 웹 프로젝트</div>
+      </div>
+      <div class="rm-step reveal-child">
+        <div class="rm-dot">2</div>
+        <div class="rm-year">2학년 · 168H</div>
+        <div class="rm-title">백엔드 & 데이터 연동</div>
+        <div class="rm-desc">Java · JSP · Servlet<br />Oracle DB · MVC 패턴 웹 프로젝트</div>
+      </div>
+      <div class="rm-step reveal-child">
+        <div class="rm-dot">3</div>
+        <div class="rm-year">3학년 · 168H</div>
+        <div class="rm-title">실무형 풀스택 완성</div>
+        <div class="rm-desc">Spring Boot · AWS · Open AI<br />팀 협업 실무형 서비스 배포</div>
+      </div>
+    </div>
+
+    <div class="pf-grid">
+      <div class="pf-card reveal-child">
+        <div class="pf-thumb">
+          <img src="images/pf_p4_img1.jpg" alt="PayPal 반응형 웹 프로젝트" />
+        </div>
+        <div class="pf-body">
+          <span class="pf-year-badge">1학년 프로젝트</span>
+          <h4>PayPal 반응형 웹</h4>
+          <p>글로벌 서비스의 UI 구조를 분석해 HTML·CSS·Bootstrap으로 모바일·태블릿·데스크톱 모두 대응하는 반응형 웹을 구현하고 GitHub Pages로 직접 배포했습니다.</p>
+          <div class="pf-tags">
+            <span class="pf-tag">HTML5</span>
+            <span class="pf-tag">CSS3</span>
+            <span class="pf-tag">JavaScript</span>
+            <span class="pf-tag">Bootstrap</span>
+            <span class="pf-tag">GitHub Pages</span>
+          </div>
+        </div>
+      </div>
+      <div class="pf-card reveal-child">
+        <div class="pf-thumb">
+          <img src="images/pf_p8_img1.jpg" alt="Impact 웹 쇼핑몰" />
+        </div>
+        <div class="pf-body">
+          <span class="pf-year-badge">2학년 프로젝트</span>
+          <h4>Impact 웹 쇼핑몰</h4>
+          <p>관리자·사용자 기능을 모두 갖춘 풀스택 쇼핑몰 서비스. Java·JSP·Servlet으로 서버 로직을 구현하고 Oracle DB와 연동해 로그인·회원가입·CRUD 게시판을 완성했습니다.</p>
+          <div class="pf-tags">
+            <span class="pf-tag">Java</span>
+            <span class="pf-tag">JSP / Servlet</span>
+            <span class="pf-tag">Oracle DB</span>
+            <span class="pf-tag">MVC 패턴</span>
+            <span class="pf-tag">Figma</span>
+          </div>
+        </div>
+      </div>
+      <div class="pf-card reveal-child">
+        <div class="pf-thumb">
+          <img src="images/pf_p12_img2.jpg" alt="MetaCraft AssetStore" />
+        </div>
+        <div class="pf-body">
+          <span class="pf-year-badge">3학년 프로젝트</span>
+          <h4>MetaCraft AssetStore</h4>
+          <p>Unity로 제작한 3D 에셋을 업로드·공유하는 플랫폼. Spring Boot·AWS S3·Spring Security를 활용해 클라우드 기반 실무형 서비스를 팀 협업으로 완성하고 배포했습니다.</p>
+          <div class="pf-tags">
+            <span class="pf-tag">Spring Boot</span>
+            <span class="pf-tag">AWS S3</span>
+            <span class="pf-tag">Unity</span>
+            <span class="pf-tag">JPA</span>
+            <span class="pf-tag">Spring Security</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="container">
+    <div class="sec-head reveal" style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;">
+      <div>
+        <span class="sec-label">NEWS</span>
+        <h2 class="sec-title">학과 소식</h2>
+      </div>
+      <a href="#" class="btn-outline" style="font-size:0.82rem;padding:8px 18px;">전체 보기</a>
+    </div>
+    <!-- ★ 뉴스 카드 썸네일: news-thumb 영역을 <img> 태그로 교체해주세요 -->
+    <div class="news-grid">
+      <div class="news-card reveal-child">
+        <div class="news-thumb">
+          <img src="images/2025_p3_img2.jpg" alt="K-TECH 아이디어 챌린지 장려상" />
+        </div>
+        <div class="news-body">
+          <span class="news-badge">수상 소식</span>
+          <h4>K-TECH 아이디어 챌린지 장려상 2팀 수상</h4>
+          <p>창의융합 아이디어 챌린지에서 장려상 2팀이 수상하며 학과의 창의적 문제 해결 능력을 입증했습니다.</p>
+          <div class="news-date">2025. 09</div>
+        </div>
+      </div>
+      <div class="news-card reveal-child">
+        <div class="news-thumb">
+          <img src="images/2025_p4_img1.jpg" alt="경기도 기능경기대회 은상" />
+        </div>
+        <div class="news-body">
+          <span class="news-badge">수상 소식</span>
+          <h4>2025 경기도 기능경기대회 게임개발 은상</h4>
+          <p>2025년 경기도 기능경기대회 게임개발 분야 은상, 2024년 웹디자인 동상·장려상에 이어 연속 입상했습니다.</p>
+          <div class="news-date">2025. 04</div>
+        </div>
+      </div>
+      <div class="news-card reveal-child">
+        <div class="news-thumb">
+          <img src="images/2025_p6_img1.jpg" alt="아주대 캠퍼스 방문" />
+        </div>
+        <div class="news-body">
+          <span class="news-badge">진로 탐방</span>
+          <h4>아주대학교 캠퍼스 탐방 및 진로 체험</h4>
+          <p>학생들이 대학교 캠퍼스를 직접 방문해 진학 진로를 탐색하고 대학 생활을 미리 경험했습니다.</p>
+          <div class="news-date">2025. 06</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMISSION -->
+<section id="admission">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="sec-label">ADMISSION</span>
+      <h2 class="sec-title">입학 안내</h2>
+      <p class="sec-sub">중학교 3학년이라면 지금 준비를 시작하세요.</p>
+    </div>
+    <div class="adm-layout">
+      <div class="adm-box reveal-child">
+        <h3>📊 내신 성적 산출 기준</h3>
+        <table class="score-table">
+          <thead>
+            <tr><th>평가 항목</th><th>배점</th><th>비율</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>교과활동상황</td><td>150점</td><td>75%</td></tr>
+            <tr><td>출결상황</td><td>20점</td><td>10%</td></tr>
+            <tr><td>봉사활동실적</td><td>20점</td><td>10%</td></tr>
+            <tr><td>학교활동실적</td><td>10점</td><td>5%</td></tr>
+            <tr><td>합계</td><td>200점</td><td>100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="adm-box reveal-child">
+        <h3>📅 전형 일정</h3>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot">1</div>
+            <div class="tl-body">
+              <h5>원서 접수</h5>
+              <p>매년 11월 중 · 학교 홈페이지 공고 확인</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot">2</div>
+            <div class="tl-body">
+              <h5>서류 제출 및 심사</h5>
+              <p>중학교 내신 성적 기반 서류 평가</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot">3</div>
+            <div class="tl-body">
+              <h5>합격자 발표</h5>
+              <p>12월 중 · 개별 통보 및 홈페이지 공지</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot">4</div>
+            <div class="tl-body">
+              <h5>등록 완료</h5>
+              <p>합격 후 등록 기간 내 등록 완료</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-layout">
+      <div>
+        <div class="sec-head reveal">
+          <span class="sec-label">CONTACT</span>
+          <h2 class="sec-title">오시는 길 & 문의</h2>
+        </div>
+        <div class="contact-info">
+          <div class="ci-item reveal-child">
+            <div class="ci-icon">📍</div>
+            <div>
+              <h5>주소</h5>
+              <p>경기도 수원시 영통구 동수원로551번길 16</p>
+            </div>
+          </div>
+          <div class="ci-item reveal-child">
+            <div class="ci-icon">📞</div>
+            <div>
+              <h5>교무실 전화</h5>
+              <p>031-218-4100</p>
+            </div>
+          </div>
+          <div class="ci-item reveal-child">
+            <div class="ci-icon">🌐</div>
+            <div>
+              <h5>공식 홈페이지</h5>
+              <p>swjb-h.goesw.kr</p>
+            </div>
+          </div>
+          <div class="ci-item reveal-child">
+            <div class="ci-icon">🚌</div>
+            <div>
+              <h5>교통 안내</h5>
+              <p>수원역 · 영통역에서 버스 이용</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ★ 지도: 카카오맵·네이버지도 API 연동 또는 지도 스크린샷 이미지로 교체 -->
+      <div class="map-area reveal">
+        <span>🗺️</span>
+        <p>지도 이미지 또는 API 연동</p>
+        <p style="font-size:0.75rem;">경기도 수원시 영통구</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="ft-brand">
+      <h3>수원정보과학고등학교<br />IT소프트웨어과</h3>
+      <p>경기도 수원시 영통구 동수원로551번길 16<br />교무실: 031-218-4100</p>
+      <div class="ft-social">
+        <a href="#" title="YouTube">▶</a>
+        <a href="#" title="Instagram">◉</a>
+        <a href="#" title="GitHub">⌥</a>
+        <a href="#" title="홈페이지">⊕</a>
+      </div>
+    </div>
+    <div class="ft-col">
+      <h4>학과 안내</h4>
+      <ul>
+        <li><a href="#about">학과 소개</a></li>
+        <li><a href="#curriculum">교육과정</a></li>
+        <li><a href="#career">졸업 후 진로</a></li>
+        <li><a href="#gallery">학교생활</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>입학</h4>
+      <ul>
+        <li><a href="#admission">입학 안내</a></li>
+        <li><a href="#admission">전형 일정</a></li>
+        <li><a href="#admission">성적 산출</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>바로가기</h4>
+      <ul>
+        <li><a href="https://swjb-h.goesw.kr" target="_blank">학교 공식 홈페이지</a></li>
+        <li><a href="#news">학과 소식</a></li>
+        <li><a href="#contact">오시는 길</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 수원정보과학고등학교 IT소프트웨어과. 본 페이지는 홍보용 데모 사이트입니다.</span>
+    <span>경기도 수원시 영통구</span>
+  </div>
+</footer>
+
+<script>
+  /* ── Tab switchers ── */
+  function switchYear(id) {
+    document.querySelectorAll('.ytab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.year-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`[onclick="switchYear('${id}')"]`).classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  function switchCareer(id) {
+    document.querySelectorAll('.ctab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.career-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`[onclick="switchCareer('${id}')"]`).classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  /* ── IntersectionObserver: gallery fade-in ── */
+  const galleryObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 75);
+        galleryObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.g-item').forEach(el => galleryObserver.observe(el));
+
+  /* ── IntersectionObserver: .reveal sections ── */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  /* ── IntersectionObserver: staggered .reveal-child ── */
+  const childObserver = new IntersectionObserver((entries) => {
+    // group siblings for stagger
+    const groups = {};
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const parent = entry.target.parentElement;
+        if (!groups[parent]) groups[parent] = [];
+        groups[parent].push(entry.target);
+      }
+    });
+    Object.values(groups).forEach(children => {
+      children.forEach((el, i) => {
+        setTimeout(() => el.classList.add('in-view'), i * 100);
+        childObserver.unobserve(el);
+      });
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal-child').forEach(el => childObserver.observe(el));
+
+  /* ── Active nav on scroll ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-item > a');
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        let cur = '';
+        sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+        });
+        // header scrolled shadow
+        document.querySelector('header').classList.toggle('scrolled', window.scrollY > 10);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+</script>
+
+</body>
+</html>
