@@ -971,24 +971,7 @@
       overflow: hidden;
       position: relative;
     }
-    .career-photo::before {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border-radius: calc(var(--radius-lg) + 8px);
-      background: linear-gradient(135deg, var(--cyan), var(--blue), transparent 60%);
-      z-index: -1;
-      opacity: 0.5;
-    }
-    .career-photo::after {
-      content: '';
-      position: absolute;
-      bottom: -8px; right: -8px;
-      width: 60%; height: 60%;
-      border-radius: var(--radius-lg);
-      border: 2px solid rgba(27,79,216,0.15);
-      z-index: -1;
-    }
+    .career-photo::before, .career-photo::after { display: none; }
     .career-photo img {
       width: 100%; height: auto;
       display: block;
