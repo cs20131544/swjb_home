@@ -2256,14 +2256,23 @@
     ytPlayer = new YT.Player('yt-player', {
       videoId: 'qsGBIwz2e0E',
       playerVars: {
-        autoplay: 1, mute: 1, controls: 0, disablekb: 1,
-        loop: 0, playsinline: 1, rel: 0, showinfo: 0,
-        iv_load_policy: 3, start: YT_START
+        autoplay: 1, mute: 1, controls: 1, disablekb: 1,
+        loop: 0, playsinline: 1, rel: 0,
+        iv_load_policy: 3, start: YT_START,
+        origin: window.location.origin
       },
       events: {
         onReady: function(e) { e.target.playVideo(); },
         onStateChange: function(e) {
           if (e.data === YT.PlayerState.PLAYING) startLoop();
+        },
+        onError: function(e) {
+          document.getElementById('yt-player').style.display = 'none';
+          var img = document.createElement('img');
+          img.src = 'main.png';
+          img.alt = 'IT소프트웨어과';
+          img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center;';
+          document.querySelector('.hero-media').appendChild(img);
         }
       }
     });
