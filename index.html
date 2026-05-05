@@ -415,6 +415,65 @@
       50%       { transform: translateY(5px); }
     }
 
+    /* ─── HERO TERMINAL ─── */
+    .hero-terminal {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: min(400px, 35vw);
+      background: rgba(6, 10, 22, 0.82);
+      border-radius: 12px;
+      border: 1px solid rgba(59,130,246,0.25);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 40px rgba(27,79,216,0.1);
+      backdrop-filter: blur(18px);
+      z-index: 4;
+      overflow: hidden;
+      font-family: 'Courier New', 'Consolas', monospace;
+      font-size: 0.76rem;
+    }
+    .terminal-bar {
+      background: rgba(255,255,255,0.05);
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .t-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .t-title {
+      margin-left: 8px;
+      color: rgba(255,255,255,0.3);
+      font-size: 0.7rem;
+      font-family: 'Noto Sans KR', sans-serif;
+      letter-spacing: 0.02em;
+    }
+    .terminal-body {
+      padding: 14px 16px 16px;
+      min-height: 210px;
+      color: #e2e8f0;
+      line-height: 1.75;
+    }
+    .t-line { display: block; white-space: pre; min-height: 1.75em; }
+    .t-cmd     { color: #60c3f7; }
+    .t-comment { color: #475569; }
+    .t-keyword { color: #c084fc; }
+    .t-string  { color: #86efac; }
+    .t-output  { color: #94a3b8; }
+    .t-success { color: #4ade80; }
+    .t-error   { color: #f87171; }
+    .t-prompt  { color: #06b6d4; }
+    .t-cursor  {
+      display: inline-block;
+      width: 7px; height: 13px;
+      background: #60c3f7;
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: tBlink 1s step-end infinite;
+    }
+    @keyframes tBlink { 50% { opacity: 0; } }
+    @media (max-width: 960px) { .hero-terminal { display: none; } }
+
     /* ─── STATS BAND ─── */
     .stats-band {
       background: linear-gradient(135deg, var(--navy) 0%, #0d2656 100%);
@@ -1504,6 +1563,23 @@
       <a href="#about" class="btn-ghost">학과 소개 →</a>
     </div>
   </div>
+  <!-- terminal -->
+  <div class="hero-terminal" aria-hidden="true">
+    <div class="terminal-bar">
+      <span class="t-dot" style="background:#ff5f57"></span>
+      <span class="t-dot" style="background:#febc2e"></span>
+      <span class="t-dot" style="background:#28c840"></span>
+      <span class="t-title">student@swit-software: ~/project</span>
+    </div>
+    <div class="terminal-body">
+      <div id="terminal-lines"></div>
+      <div style="display:flex;align-items:center;gap:4px;">
+        <span class="t-prompt">❯</span>
+        <span id="terminal-typing"></span>
+        <span class="t-cursor"></span>
+      </div>
+    </div>
+  </div>
   <!-- scroll indicator -->
   <div class="hero-scroll-hint">
     <div class="arrow">↓</div>
@@ -2239,6 +2315,61 @@
 </script>
 
 <script>
+  /* ── TERMINAL TYPING ANIMATION ── */
+  (function() {
+    var sequence = [
+      { text: '$ python ai_model.py',            cls: 't-cmd',     type: true  },
+      { text: '',                                  cls: '',          type: false },
+      { text: '# IT소프트웨어과 AI 프로젝트',      cls: 't-comment', type: true  },
+      { text: 'import numpy  as np',              cls: 't-keyword', type: true  },
+      { text: 'import tensorflow as tf',           cls: 't-keyword', type: true  },
+      { text: '',                                  cls: '',          type: false },
+      { text: 'model = tf.keras.Sequential([',    cls: 't-string',  type: true  },
+      { text: '  Dense(128, activation="relu"),', cls: 't-string',  type: true  },
+      { text: '  Dense(10,  activation="softmax")', cls: 't-string', type: true },
+      { text: '])',                                cls: 't-string',  type: true  },
+      { text: 'model.fit(X_train, y_train)',       cls: 't-cmd',     type: true  },
+      { text: '',                                  cls: '',          type: false },
+      { text: '> Epoch 10/10 — loss: 0.042',      cls: 't-output',  type: true  },
+      { text: '> Accuracy: 97.3%  ✓',             cls: 't-success', type: true  },
+      { text: '',                                  cls: '',          type: false },
+      { text: '$ git commit -m "AI 프로젝트 완성"', cls: 't-cmd',    type: true  },
+      { text: '> [main] 취업 성공! 🎉',            cls: 't-success', type: true  },
+      { text: '',                                  cls: '',          type: false },
+    ];
+
+    var linesEl   = document.getElementById('terminal-lines');
+    var typingEl  = document.getElementById('terminal-typing');
+    var si = 0, ci = 0;
+    var CHAR_DELAY = 38, LINE_PAUSE = 420, END_PAUSE = 1800;
+
+    function addLine(text, cls) {
+      var s = document.createElement('span');
+      s.className = 't-line ' + cls;
+      s.textContent = text;
+      linesEl.appendChild(s);
+      // keep only last 12 lines
+      while (linesEl.children.length > 12) linesEl.removeChild(linesEl.firstChild);
+    }
+
+    function typeChar() {
+      var item = sequence[si];
+      if (!item.type || ci >= item.text.length) {
+        addLine(item.type ? item.text : '', item.cls);
+        typingEl.textContent = '';
+        ci = 0;
+        si = (si + 1) % sequence.length;
+        var pause = si === 0 ? END_PAUSE : LINE_PAUSE;
+        setTimeout(typeChar, pause);
+      } else {
+        typingEl.textContent = item.text.slice(0, ++ci);
+        setTimeout(typeChar, CHAR_DELAY + (Math.random() * 20 - 10));
+      }
+    }
+
+    setTimeout(typeChar, 800);
+  })();
+
   var vid = document.getElementById('hero-video');
   vid.addEventListener('timeupdate', function() {
     if (vid.currentTime >= 33) {
