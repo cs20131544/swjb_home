@@ -274,6 +274,17 @@
       overflow: hidden;
       background: #06112a;
     }
+    .hero-media iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 177.78vh;
+      height: 56.25vw;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+      border: none;
+      pointer-events: none;
+    }
     .hero-media img {
       width: 100%; height: 100%;
       object-fit: cover;
@@ -1482,7 +1493,7 @@
 <!-- ★ 히어로 배경: 동영상은 .hero-media 안에 <video> 태그, 사진은 background-image CSS로 추가해주세요 -->
 <section id="hero">
   <div class="hero-media">
-    <img src="main.png" alt="IT소프트웨어과" />
+    <div id="yt-player"></div>
   </div>
   <div class="hero-overlay"></div>
   <!-- floating particles -->
@@ -2239,5 +2250,36 @@
   });
 </script>
 
+<script>
+  var YT_START = 168, YT_END = 202, ytPlayer;
+  function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('yt-player', {
+      videoId: 'qsGBIwz2e0E',
+      playerVars: {
+        autoplay: 1, mute: 1, controls: 0, disablekb: 1,
+        loop: 0, playsinline: 1, rel: 0, showinfo: 0,
+        iv_load_policy: 3, start: YT_START
+      },
+      events: {
+        onReady: function(e) { e.target.playVideo(); },
+        onStateChange: function(e) {
+          if (e.data === YT.PlayerState.PLAYING) startLoop();
+        }
+      }
+    });
+  }
+  var loopTimer;
+  function startLoop() {
+    clearInterval(loopTimer);
+    loopTimer = setInterval(function() {
+      if (!ytPlayer) return;
+      var t = ytPlayer.getCurrentTime();
+      if (t >= YT_END) ytPlayer.seekTo(YT_START, true);
+    }, 500);
+  }
+  var tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+</script>
 </body>
 </html>
