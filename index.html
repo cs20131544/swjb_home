@@ -274,7 +274,7 @@
       overflow: hidden;
       background: #06112a;
     }
-    .hero-media iframe {
+    #hero-video {
       position: absolute;
       top: 50%; left: 50%;
       width: 177.78vh;
@@ -282,7 +282,7 @@
       min-width: 100%;
       min-height: 100%;
       transform: translate(-50%, -50%);
-      border: none;
+      object-fit: cover;
       pointer-events: none;
     }
     .hero-media img {
@@ -1493,7 +1493,9 @@
 <!-- ★ 히어로 배경: 동영상은 .hero-media 안에 <video> 태그, 사진은 background-image CSS로 추가해주세요 -->
 <section id="hero">
   <div class="hero-media">
-    <div id="yt-player"></div>
+    <video id="hero-video" autoplay muted playsinline preload="auto">
+      <source src="videoplayback.mp4" type="video/mp4" />
+    </video>
   </div>
   <div class="hero-overlay"></div>
   <!-- floating particles -->
@@ -2251,44 +2253,14 @@
 </script>
 
 <script>
-  var YT_START = 0, YT_END = 33, ytPlayer;
-  function onYouTubeIframeAPIReady() {
-    ytPlayer = new YT.Player('yt-player', {
-      videoId: 'dm2EfWi69rY',
-      playerVars: {
-        autoplay: 1, mute: 1, controls: 1, disablekb: 1,
-        loop: 0, playsinline: 1, rel: 0,
-        iv_load_policy: 3, start: YT_START,
-        origin: window.location.origin
-      },
-      events: {
-        onReady: function(e) { e.target.playVideo(); },
-        onStateChange: function(e) {
-          if (e.data === YT.PlayerState.PLAYING) startLoop();
-        },
-        onError: function(e) {
-          document.getElementById('yt-player').style.display = 'none';
-          var img = document.createElement('img');
-          img.src = 'main.png';
-          img.alt = 'IT소프트웨어과';
-          img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center;';
-          document.querySelector('.hero-media').appendChild(img);
-        }
-      }
-    });
-  }
-  var loopTimer;
-  function startLoop() {
-    clearInterval(loopTimer);
-    loopTimer = setInterval(function() {
-      if (!ytPlayer) return;
-      var t = ytPlayer.getCurrentTime();
-      if (t >= YT_END) ytPlayer.seekTo(YT_START, true);
-    }, 500);
-  }
-  var tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(tag);
+  var vid = document.getElementById('hero-video');
+  vid.addEventListener('timeupdate', function() {
+    if (vid.currentTime >= 33) {
+      vid.currentTime = 0;
+      vid.play();
+    }
+  });
+  vid.play().catch(function() {});
 </script>
 </body>
 </html>
