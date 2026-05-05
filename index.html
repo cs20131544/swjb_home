@@ -909,7 +909,7 @@
     #career { background: var(--white); }
     .career-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1.2fr;
       gap: 4.5rem;
       align-items: center;
     }
@@ -970,13 +970,15 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       position: relative;
+      border: 3px solid transparent;
+      background: linear-gradient(var(--white), var(--white)) padding-box,
+                  linear-gradient(135deg, var(--cyan), var(--blue)) border-box;
+      box-shadow: 0 8px 32px rgba(27,79,216,0.15), 0 2px 8px rgba(0,0,0,0.08);
     }
-    .career-photo::before, .career-photo::after { display: none; }
     .career-photo img {
       width: 100%; height: auto;
       display: block;
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
+      border-radius: calc(var(--radius-lg) - 3px);
     }
 
     /* ─── ADMISSION ─── */
